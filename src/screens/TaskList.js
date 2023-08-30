@@ -22,13 +22,36 @@ export default class TaskList extends Component {
                         <Text style={styles.subtitle}>{today}</Text>
                     </View>   
                 </ImageBackground>
-                <View style={styles.taskList}>
+                <View style={styles.taskList}>            
                     <Task desc="Comprar Livro" estimateAt={new Date()}
                         doneAt={new Date()}/>
-                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                    <Task desc="Ler Livro" estimateAt={new Date()}
                     doneAt={null}/>
-            </View>
-                
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                    <Task desc="Comprar Livro" estimateAt={new Date()}
+                        doneAt={new Date()}/>
+                    <Task desc="Ler Livro" estimateAt={new Date()}
+                    doneAt={null}/>
+                </View>                
             </View>
         )
     }
