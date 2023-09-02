@@ -1,61 +1,55 @@
 import React from "react";
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
-//import Icon from 'react-native-vector-icons/FontAwesome'
-//import { Icon } from 'react-native-elements'
-
-import Swipeable from 'react-native-gesture-handler/Swipeable'
-
-import moment from 'moment'
-import'moment/locale/pt-br'
-
-import doneIcon from '../../assets/doneIcon.png'
-import trash from '../../assets/trash.png'
-
+import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+import doneIcon from '../../assets/doneIcon.png';
+import trash from '../../assets/trash.png';
 import commonStyles from "../commonStyles";
 
-export default props =>{
+export default props => {
 
-    const doneOrNotStyle = props.doneAt != null ? 
-    { textDecorationLine: 'line-through' } : {}
+    const doneOrNotStyle = props.doneAt != null ?
+        { textDecorationLine: 'line-through' } : {};
 
-    const date = props.doneAt ? props.doneAt : props.estimateAt
+    const date = props.doneAt ? props.doneAt : props.estimateAt;
     const formattedDate = moment(date).locale('pt-br')
-        .format('ddd, D [de] MMMM')
+        .format('ddd, D [de] MMMM');
 
-        const getRightContent = () => {
-            return (
-                <TouchableOpacity>
-                    <Image source={trash} style={{ width: 30, height: 30 }} />
-                </TouchableOpacity>
-            );
-        };
-        
+    const getRightContent = () => {
+        return (
+            <TouchableOpacity style={styles.right}>
+                <Image source={trash} style={{ width: 50, height: 50 }} />
+            </TouchableOpacity>
+        );
+    };
 
     return (
-        <Swipeable renderRightActions={getRightContent}>
-            <View style={styles.container}>
-                <TouchableWithoutFeedback
-                    onPress={() => props.toggleTask(props.id)}>
-                    <View style={styles.checkContainer}>
-                        {getCheckView(props.doneAt)}
+        <GestureHandlerRootView>
+            <Swipeable renderRightActions={getRightContent}>
+                <View style={styles.container}>
+                    <TouchableWithoutFeedback
+                        onPress={() => props.toggleTask(props.id)}>
+                        <View style={styles.checkContainer}>
+                            {getCheckView(props.doneAt)}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <View>
+                        <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
+                        <Text style={styles.data}>{formattedDate}</Text>
                     </View>
-                </TouchableWithoutFeedback>
-                <View>
-                    <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
-                    <Text style={styles.data}>{formattedDate}</Text>
                 </View>
-                
-        </View>
-        </Swipeable>
+            </Swipeable>
+        </GestureHandlerRootView>
     )
 }
 
-
-function getCheckView(doneAt){
-    if(doneAt != null) {
+function getCheckView(doneAt) {
+    if (doneAt != null) {
         return (
             <View style={styles.done}>
-                <Image source={doneIcon}/>                
+                <Image source={doneIcon} />
             </View>
         )
     } else {
@@ -63,17 +57,15 @@ function getCheckView(doneAt){
             <View style={styles.pending}></View>
         )
     }
-    
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        boderColor: '#AAA',
+        borderColor: '#AAA',
         borderBottomWidth: 1,
         alignItems: 'center',
-        paddingVertical: 10    
+        paddingVertical: 10
     },
     checkContainer: {
         width: '20%',
@@ -104,6 +96,12 @@ const styles = StyleSheet.create({
         fontFamily: commonStyles.fontFamily,
         color: commonStyles.colors.subText,
         fontSize: 12,
-        
+    },
+    right: {
+        backgroundColor: 'red',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingHorizontal: 20,
     }
 })
