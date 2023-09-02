@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, Image, StyleSheet, FlatList, TouchableOpacity, Platform} from 'react-native'
+import { Alert, View, Text, ImageBackground, Image, StyleSheet,
+    FlatList, TouchableOpacity, Platform} from 'react-native'
 
 import commonStyles from '../commonStyles'
 import todayImage from '../../assets/imgs/today.jpg'
@@ -63,15 +64,33 @@ export default class TaskList extends Component {
         })
 
         this.setState({ tasks }, this.filterTasks)
+        
 }
-    
+
+        addTask = (newTask) => {
+           if(!newTask.desc || !newTask.desc.trim()){
+                Alert.alert('Dados Inválidos', 'Descrição não informada!')
+                return 
+           }
+           
+           const tasks = [...this.state.tasks]
+           tasks.push({
+            id: Math.random(),
+            desc: newTask.desc,
+            estimateAt: newTask.date,
+            doneAt: null,
+           })
+
+           this.setState({ tasks, showAddTask: false}, this.filterTasks)
+        }
 
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
             <View style={styles.container}>
                 <AddTask isVisible={this.state.showAddTask}
-                    onCancel={()=> this.setState({ showAddTask: false})}/>
+                  onCancel={()=> this.setState({ showAddTask: false})}
+                  onSave={this.addTask }/>
                 <ImageBackground source={todayImage}
                     style={styles.background}>
                     <View style={styles.iconBar}>

@@ -1,12 +1,15 @@
 import React from "react";
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 //import Icon from 'react-native-vector-icons/FontAwesome'
 //import { Icon } from 'react-native-elements'
+
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 
 import moment from 'moment'
 import'moment/locale/pt-br'
 
 import doneIcon from '../../assets/doneIcon.png'
+import trash from '../../assets/trash.png'
 
 import commonStyles from "../commonStyles";
 
@@ -19,20 +22,31 @@ export default props =>{
     const formattedDate = moment(date).locale('pt-br')
         .format('ddd, D [de] MMMM')
 
+        const getRightContent = () => {
+            return (
+                <TouchableOpacity>
+                    <Image source={trash} style={{ width: 30, height: 30 }} />
+                </TouchableOpacity>
+            );
+        };
+        
+
     return (
-        <View style={styles.container}>
-            <TouchableWithoutFeedback
-                onPress={() => props.toggleTask(props.id)}>
-                <View style={styles.checkContainer}>
-                    {getCheckView(props.doneAt)}
+        <Swipeable renderRightActions={getRightContent}>
+            <View style={styles.container}>
+                <TouchableWithoutFeedback
+                    onPress={() => props.toggleTask(props.id)}>
+                    <View style={styles.checkContainer}>
+                        {getCheckView(props.doneAt)}
+                    </View>
+                </TouchableWithoutFeedback>
+                <View>
+                    <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
+                    <Text style={styles.data}>{formattedDate}</Text>
                 </View>
-            </TouchableWithoutFeedback>
-            <View>
-                <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
-                <Text style={styles.data}>{formattedDate}</Text>
-            </View>
-            
+                
         </View>
+        </Swipeable>
     )
 }
 
