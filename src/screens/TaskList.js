@@ -1,6 +1,21 @@
 import React, { Component } from 'react'
 import { Alert, View, Text, ImageBackground, Image, StyleSheet,
-    FlatList, TouchableOpacity, Platform} from 'react-native'
+    FlatList, TouchableOpacity, Platform, } from 'react-native'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment'
+import 'moment/locale/pt-br'
+
+ 
+import Task from '../components/Task'
+import AddTask from './AddTask'
+
+const initialState = {
+    showDoneTasks: true,
+    showAddTask: false,
+    visibleTasks: [],
+    tasks: []
+ }
 
 import commonStyles from '../commonStyles'
 import todayImage from '../../assets/imgs/today.jpg'
@@ -8,35 +23,18 @@ import eyeOpen from '../../assets/eyeOpen.png'
 import eyeClose from '../../assets/eyeClose.png'
 import plus from '../../assets/plus.png'
 
-import moment from 'moment'
-import 'moment/locale/pt-br'
-
-
-import Task from '../components/Task'
-import AddTask from './AddTask'
 
 
 export default class TaskList extends Component {
     state = {
-        showDoneTasks: true,
-        showAddTask: false,
-        visibleTasks: [],
-        tasks: [{
-            id: Math.random(),
-            desc: 'Comprar Livro de React Native',
-            estimateAt: new Date(),
-            doneAt: new Date(),
-        }, {
-            id: Math.random(),
-            desc: 'Ler Livro de React Native',
-            estimateAt: new Date(),
-            doneAt: null,
-        }]
+        ... initialState
     }
 
 
-    componentDidMount = () => {
-        this.filterTasks()
+    componentDidMount =  async () => {
+        const stateString = await AsyncStorage.getItem('tasksState')
+        const state = JSON.parse(stateString) || initialState
+        this.setState(state, this.filterTasks)
     }
 
     toggleFilter = () => {
@@ -53,6 +51,7 @@ export default class TaskList extends Component {
         }
 
         this.setState({ visibleTasks })
+        AsyncStorage.setItem('tasksState', JSON.stringify(this.state))
     }
 
     toggleTask = taskId => {
